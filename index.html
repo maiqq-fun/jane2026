@@ -404,9 +404,9 @@ function buildTrack(def){
 const _=undefined, N_=null;
 /* 想放自己的 mp3：把檔案放進 music 資料夾，然後在下面填檔名 */
 const AUDIO_FILES = [
-  { name:"Dilemma.mp3",   src:"music/Dilemma.mp3" },
-  { name:"Timber.mp3",    src:"music/Timber.mp3" },
-  { name:"TakeABow.mp3",  src:"music/TakeABow.mp3" },
+  { name:"Dilemma.mp3",    src:"music/Dilemma.mp3" },
+  { name:"Take_A_Bow.mp3", src:"music/TakeABow.mp3" },
+  { name:"Timber.mp3",     src:"music/Timber.mp3" },
 ];
 const TRACKS=[
  {name:"happy_birthday.wav", bpm:176, leadWave:"square", leadVol:0.13, chords:[[48,52,55],[48,52,55],[43,47,50],[43,47,50],[43,47,50],[48,52,55],[48,52,55],[41,45,48],[41,45,48],[41,45,48],[43,47,50],[48,52,55]], bass:"hold", tail:0.7,
@@ -423,7 +423,7 @@ const TRACKS=[
 ].map(d=>Object.assign(d,buildTrack(d)));
 const AUD=new Audio(); AUD.preload="none";
 TRACKS.splice(1,0,...AUDIO_FILES.map(a=>({name:a.name, src:a.src, ev:[], len:1})));
-TRACKS.length=1+AUDIO_FILES.length; // 只保留生日快樂歌＋自己的歌
+TRACKS.splice(0,1); TRACKS.length=AUDIO_FILES.length; // 只保留自己的歌
 
 let ctx=null, playing=false, seqTimer=null, cur_t=0, loopStart=0, evIdx=0, master=null, noiseBuf=null;
 function voice(kind,midi,t,dur,vol){
