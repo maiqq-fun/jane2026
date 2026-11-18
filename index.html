@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HAPPY BIRTHDAY 娟.exe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f2c4f6; --grid:#e7a9ee; --ink:#2b2540; --cream:#fdf1e8;
+  --pink:#ff8fc8; --pink2:#ffd0e8; --yellow:#ffc533; --cyan:#43dde6; --lilac:#c9a8ff;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+html{overflow-x:hidden}
+main{overflow-x:clip}
+body{
+  font-family:"DotGothic16","PingFang TC","Noto Sans TC",sans-serif;
+  color:var(--ink); background:var(--bg);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px; min-height:100vh; overflow-x:hidden;
+}
+.en{font-family:"VT323",monospace;letter-spacing:.5px}
+button{font:inherit;color:inherit;cursor:pointer}
+img{-webkit-user-drag:none}
+
+/* ---------- window ---------- */
+.win{background:var(--cream);border:2.5px solid var(--ink);border-radius:6px;box-shadow:5px 5px 0 var(--ink);margin:0 auto 34px;max-width:460px;position:relative}
+.bar{display:flex;align-items:center;gap:8px;padding:6px 10px;border-bottom:2.5px solid var(--ink);background:var(--pink2);border-radius:3px 3px 0 0}
+.bar.y{background:var(--yellow)} .bar.c{background:var(--cyan)} .bar.l{background:var(--lilac)} .bar.p{background:var(--pink)}
+.dots{display:flex;gap:5px}
+.dots i{width:11px;height:11px;border:2px solid var(--ink);border-radius:50%;display:block}
+.dots i:nth-child(1){background:var(--pink)} .dots i:nth-child(2){background:var(--yellow)} .dots i:nth-child(3){background:var(--cyan)}
+.bar .t{font-family:"VT323",monospace;font-size:22px;line-height:1;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .x{width:24px;height:24px;border:2px solid var(--ink);border-radius:3px;background:var(--cream);display:grid;place-items:center;font-family:VT323;font-size:18px;line-height:1;padding:0}
+.body{padding:16px}
+.tilt1{transform:rotate(-1.2deg)} .tilt2{transform:rotate(1deg)}
+main{padding:28px 18px 60px;display:none}
+main.on{display:block}
+
+/* ---------- boot ---------- */
+#boot{position:fixed;inset:0;display:grid;place-items:center;z-index:50;padding:20px}
+#boot .win{width:100%;max-width:360px;margin:0}
+.prog{height:22px;border:2.5px solid var(--ink);border-radius:4px;background:#fff;overflow:hidden;margin:12px 0 6px}
+.prog b{display:block;height:100%;width:0;background:repeating-linear-gradient(90deg,var(--pink) 0 8px,var(--cream) 8px 11px);transition:width .2s}
+.btn{border:2.5px solid var(--ink);border-radius:5px;background:var(--yellow);padding:8px 18px;font-size:18px;box-shadow:3px 3px 0 var(--ink);transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.btn.pink{background:var(--pink)} .btn.cyan{background:var(--cyan)} .btn.white{background:#fff}
+.btn[disabled]{opacity:.4;pointer-events:none}
+.center{text-align:center}
+
+/* ---------- hero ---------- */
+.hero{text-align:center;margin:10px auto 40px;max-width:460px;position:relative}
+.bubble{display:inline-block;background:var(--yellow);border:2.5px solid var(--ink);border-radius:20px;padding:4px 16px;font-family:VT323;font-size:24px;position:relative;box-shadow:3px 3px 0 var(--ink)}
+.bubble:after{content:"";position:absolute;left:24px;bottom:-11px;width:14px;height:14px;background:var(--yellow);border-right:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);transform:rotate(45deg)}
+.big{font-family:VT323;font-size:64px;line-height:.9;margin:22px 0 4px;text-shadow:3px 3px 0 var(--pink),6px 6px 0 var(--ink)}
+.name{font-size:44px;margin:6px 0 0;text-shadow:3px 3px 0 var(--cyan)}
+.spark{position:absolute;font-size:26px;animation:tw 1.6s ease-in-out infinite}
+@keyframes tw{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.35) rotate(20deg)}}
+
+/* ---------- player ---------- */
+.player{display:flex;gap:12px;align-items:center}
+.disc{width:64px;height:64px;border-radius:50%;border:2.5px solid var(--ink);flex:none;background:radial-gradient(circle,var(--ink) 0 5px,#fff 6px 11px,transparent 12px),conic-gradient(var(--pink),var(--cyan),var(--yellow),var(--lilac),var(--pink))}
+.disc.spin{animation:spin 2.5s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.now{flex:1;min-width:0}
+.now .lbl{font-family:VT323;font-size:18px;border:2px solid var(--ink);border-radius:4px;background:#fff;padding:2px 8px;white-space:nowrap;overflow:hidden}
+.ctrls{display:flex;gap:8px;margin-top:8px}
+.ctrls button{width:40px;height:34px;border:2.5px solid var(--ink);border-radius:6px;background:var(--yellow);box-shadow:2px 2px 0 var(--ink);font-size:15px}
+.eq{display:grid;grid-template-columns:repeat(14,1fr);gap:3px;margin-top:12px;height:46px;align-items:end}
+.eq i{display:block;background:var(--pink);border:1.5px solid var(--ink);border-radius:2px;height:20%;transition:height .12s}
+.eq i:nth-child(3n){background:var(--yellow)} .eq i:nth-child(4n){background:var(--lilac)}
+
+.mlist{display:grid;gap:4px;margin-top:12px}
+.mt{text-align:left;font-family:VT323;font-size:19px;background:none;border:2px dashed transparent;border-radius:4px;padding:2px 8px}
+.mt.on{background:var(--yellow);border:2px solid var(--ink)}
+.mt.on::after{content:" ♪";}
+.tracks{margin-top:12px;display:grid;gap:8px}
+.trk{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--ink);border-radius:6px;padding:7px 10px;text-decoration:none;color:var(--ink);box-shadow:2px 2px 0 var(--ink)}
+.trk b{font-family:VT323;font-size:20px;width:22px;text-align:center}
+.trk .nm{flex:1;min-width:0;font-size:14px;line-height:1.3}
+.trk .nm small{display:block;opacity:.6;font-size:11px}
+.trk .go{font-size:12px;background:var(--pink2);border:1.5px solid var(--ink);border-radius:4px;padding:2px 6px;white-space:nowrap}
+.trk:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+/* ---------- folders ---------- */
+.path{font-family:VT323;font-size:18px;border:2px solid var(--ink);border-radius:4px;background:#fff;padding:2px 8px;margin-bottom:16px}
+.folders{display:grid;grid-template-columns:repeat(3,1fr);gap:22px 14px}
+.folder{background:none;border:0;padding:0;text-align:center}
+.ficon{position:relative;width:100%;aspect-ratio:5/4;background:var(--c);border:2.5px solid var(--ink);border-radius:4px 8px 6px 6px;box-shadow:3px 3px 0 var(--ink);margin-top:10px}
+.ficon::before{content:"";position:absolute;left:-2.5px;top:-11px;width:45%;height:12px;background:var(--c);border:2.5px solid var(--ink);border-bottom:0;border-radius:5px 5px 0 0}
+.ficon img{position:absolute;left:14%;top:6%;width:72%;height:66%;object-fit:cover;border:2px solid var(--ink);background:#fff;transform:rotate(-5deg)}
+.ficon .flap{position:absolute;left:-2.5px;right:-2.5px;bottom:-2.5px;height:52%;background:var(--c);border:2.5px solid var(--ink);border-radius:3px 3px 6px 6px}
+.folder:active .ficon{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.folder span{display:block;font-family:VT323;font-size:22px;margin-top:6px;line-height:1}
+.folder small{display:block;font-size:11px;opacity:.65}
+
+/* ---------- timeline grid ---------- */
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 10px}
+.tile{background:#fff;border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);padding:4px 4px 2px;text-align:center}
+.tile:nth-child(odd){transform:rotate(-1.5deg)} .tile:nth-child(3n){transform:rotate(1.5deg)}
+.tile img{width:100%;aspect-ratio:1;object-fit:cover;display:block;border:1.5px solid var(--ink)}
+.tile span{display:block;font-family:VT323;font-size:17px;line-height:1.2;margin-top:2px}
+.tile:active{transform:translate(2px,2px)}
+/* ---------- bin ---------- */
+.binrow{display:flex;align-items:center;gap:16px}
+.binbtn{background:none;border:0;padding:0;font-size:58px;line-height:1;filter:drop-shadow(3px 3px 0 var(--ink))}
+.binbtn:active{transform:translate(2px,2px)}
+
+/* ---------- overlays ---------- */
+.overlay{position:fixed;inset:0;background:rgba(43,37,64,.45);display:none;place-items:center;z-index:40;padding:16px}
+.overlay.on{display:grid}
+#viewPop{z-index:45} #errPop{z-index:55}
+.overlay .win{width:100%;max-width:440px;margin:0;animation:pop .22s ease-out}
+@keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:58vh;overflow:auto;padding:2px 4px 6px 2px}
+.pgrid button{border:2px solid var(--ink);border-radius:4px;padding:0;aspect-ratio:1;overflow:hidden;background:#fff;box-shadow:2px 2px 0 var(--ink)}
+.pgrid img{width:100%;height:100%;object-fit:cover;display:block}
+.binacts{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.binacts[hidden]{display:none}
+.binacts .btn{font-size:15px;padding:6px 12px}
+.viewer img{width:100%;max-height:60vh;object-fit:contain;border:2.5px solid var(--ink);border-radius:4px;background:#fff;display:block}
+.cap{margin:10px 0 2px;font-size:16px;line-height:1.5;text-align:center;min-height:1.3em;font-family:"PingFang TC","Noto Sans TC",sans-serif}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.nav .en{font-size:20px}
+
+/* ---------- cake ---------- */
+.cakebox{display:grid;place-items:center;padding:6px 0 4px}
+#cake{width:270px;max-width:100%;overflow:visible}
+.candle{cursor:pointer}
+.flame{transform-origin:center bottom;transform-box:fill-box;animation:flick .35s ease-in-out infinite alternate}
+@keyframes flick{from{transform:scaleY(1) rotate(-5deg)}to{transform:scaleY(1.15) rotate(5deg)}}
+.flame.out{display:none}
+.smoke{opacity:0}
+.smoke.go{animation:smoke 1s ease-out forwards}
+@keyframes smoke{0%{opacity:.8;transform:translateY(0)}100%{opacity:0;transform:translateY(-22px)}}
+.hint{text-align:center;font-size:15px;margin-top:6px;min-height:1.4em}
+.polaroid{position:fixed;left:50%;bottom:24px;z-index:35;background:#fff;border:2.5px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:8px 8px 4px;width:190px;transform:translate(-50%,140%) rotate(-4deg);transition:transform .35s cubic-bezier(.3,1.4,.5,1),opacity .2s;opacity:0;pointer-events:none}
+.polaroid.on{transform:translate(-50%,0) rotate(-4deg);opacity:1}
+.polaroid img{width:100%;aspect-ratio:1;object-fit:cover;display:block;border:1.5px solid var(--ink)}
+.polaroid div{font-family:VT323;font-size:24px;text-align:center}
+
+#cakeBtn{background:none;border:0;padding:0;width:min(300px,100%);animation:bob 1.8s ease-in-out infinite}
+#cakeBtn img{width:100%;display:block}
+#cakeBtn:active{transform:scale(.95)}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-6px) rotate(2deg)}}
+.letter{max-height:62vh;overflow:auto;background:#fff;border:2px solid var(--ink);border-radius:4px;padding:0 16px;
+  background-image:repeating-linear-gradient(transparent 0 31px,#f3dff3 31px 32px);font-family:"PingFang TC","Noto Sans TC",sans-serif;-webkit-overflow-scrolling:touch}
+.letter p{margin:0 0 32px;font-size:15.5px;line-height:32px;white-space:pre-wrap}
+.letter p.sign{text-align:right;font-weight:700}
+.stk{position:absolute;z-index:3;pointer-events:none;filter:drop-shadow(2px 3px 0 rgba(43,37,64,.25))}
+/* ---------- clocks ---------- */
+.clocks{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.clk{background:#fff;border:2.5px solid var(--ink);border-radius:6px;box-shadow:3px 3px 0 var(--ink);padding:10px 6px;text-align:center}
+.clk .city{font-size:13px;white-space:nowrap}
+.clk .tm{font-family:VT323;font-size:clamp(26px,8.5vw,40px);line-height:1;margin:6px 0 2px;letter-spacing:1px}
+.clk .dt{font-size:12px;opacity:.7}
+.clk.tw{background:#ffe3f1} .clk.au{background:#dff7f8}
+.cd{margin-top:14px;background:var(--ink);color:#fff;border-radius:6px;padding:10px 8px;text-align:center}
+.cd .n{font-family:VT323;font-size:30px;color:var(--yellow);letter-spacing:1px}
+/* ---------- vouchers ---------- */
+.vgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.card{perspective:800px;height:138px;border:0;background:none;padding:0}
+.card .in{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.card.flip .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:2.5px solid var(--ink);border-radius:6px;box-shadow:3px 3px 0 var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px}
+.front{background:var(--lilac)}
+.front .ic{font-size:34px}
+.front .en{font-size:20px}
+.back{background:#fff;transform:rotateY(180deg);background-image:radial-gradient(var(--pink2) 1.5px,transparent 1.5px);background-size:10px 10px}
+.back .no{font-family:VT323;font-size:16px;background:var(--yellow);border:2px solid var(--ink);border-radius:3px;padding:0 6px}
+.back .txt{font-size:16px;text-align:center;margin:8px 0 4px;line-height:1.3}
+.back .fine{font-size:11px;opacity:.65}
+
+/* ---------- ending ---------- */
+.final{display:none;text-align:center;margin-top:14px}
+.final.on{display:block;animation:pop .3s ease-out}
+.final img{width:78%;border:2.5px solid var(--ink);box-shadow:4px 4px 0 var(--ink);background:#fff;padding:6px 6px 22px;transform:rotate(2deg);margin:4px 0 14px}
+.final p{font-size:21px;line-height:1.6;margin:6px 0}
+
+.cf{position:fixed;top:-20px;width:10px;height:14px;border:1.5px solid var(--ink);z-index:60;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.foot{text-align:center;font-family:VT323;font-size:18px;opacity:.7}
+</style>
+</head>
+<body>
+
+<div id="boot">
+  <div class="win">
+    <div class="bar y"><div class="dots"><i></i><i></i><i></i></div><div class="t">birthday.exe</div></div>
+    <div class="body center">
+      <div style="font-size:40px">💾</div>
+      <div class="en" style="font-size:22px">QQ Loading...</div>
+      <div class="prog"><b id="pbar"></b></div>
+      <div id="ptxt" style="font-size:14px;min-height:1.4em">正在載入 15 年的回憶...</div>
+      <div style="margin-top:14px"><button class="btn pink" id="openBtn" disabled>▶ OPEN</button></div>
+      <div style="font-size:12px;opacity:.6;margin-top:10px">（建議開聲音 🔊）</div>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+  <section class="hero" data-stk="hero">
+    <span class="spark" style="left:6%;top:4px">✦</span>
+    <span class="spark" style="right:8%;top:40px;animation-delay:.5s">✧</span>
+    <span class="spark" style="left:3%;bottom:30px;animation-delay:.9s">✦</span>
+    <div class="bubble">WELCOME!</div>
+    <div class="big">HAPPY<br>BIRTHDAY</div>
+    <div class="name">何娟 ♡</div>
+    <div class="en" style="font-size:20px;margin-top:8px;opacity:.8">2026.11.19 Jane’s Day</div>
+  </section>
+
+  <section class="win tilt1" data-stk="music">
+    <div class="bar y"><div class="dots"><i></i><i></i><i></i></div><div class="t">virtual.dream</div><div class="x">×</div></div>
+    <div class="body">
+      <div class="player">
+        <div class="disc" id="disc"></div>
+        <div class="now">
+          <div class="lbl" id="songLbl">♪</div>
+          <div class="ctrls"><button id="prevBtn2" aria-label="previous">⏮</button><button id="playBtn" aria-label="play">▶</button><button id="nextBtn2" aria-label="next">⏭</button></div>
+        </div>
+      </div>
+      <div class="eq" id="eq"></div>
+      <div class="mlist" id="mlist"></div>
+    </div>
+  </section>
+
+  <section class="win tilt2" data-err="0" data-stk="mem">
+    <div class="bar"><div class="dots"><i></i><i></i><i></i></div><div class="t">our_memories/</div><div class="x">×</div></div>
+    <div class="body">
+      <div class="path">C:\我們\2011-2026\ ▸</div>
+      <div style="font-size:13px;opacity:.7;margin:-6px 0 14px">共 <b id="pcount"></b> 張・點照片看大圖</div>
+      <div class="tgrid" id="tgrid"></div>
+    </div>
+  </section>
+
+  <section class="win tilt1">
+    <div class="bar l"><div class="dots"><i></i><i></i><i></i></div><div class="t">資源回收筒</div><div class="x">×</div></div>
+    <div class="body">
+      <div class="binrow">
+        <button class="binbtn" id="binBtn" aria-label="open recycle bin">🗑️</button>
+        <div><div style="font-size:17px">資源回收筒</div><div style="font-size:13px;opacity:.7" id="binCount"></div><div style="font-size:13px;opacity:.7">（點垃圾桶打開，自行斟酌 👀）</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="win tilt2" data-err="1" data-stk="cake">
+    <div class="bar c"><div class="dots"><i></i><i></i><i></i></div><div class="t">cake.exe</div><div class="x">×</div></div>
+    <div class="body">
+      <div class="cakebox"><button id="cakeBtn" aria-label="open letter"><img src="assets/cake.png" alt="cake"></button></div>
+      <div class="hint" id="cakeHint">👆 點蛋糕，有東西給你</div>
+    </div>
+  </section>
+
+  <section class="win tilt1" data-stk="gift">
+    <div class="bar l"><div class="dots"><i></i><i></i><i></i></div><div class="t">gift_vouchers/</div><div class="x">×</div></div>
+    <div class="body">
+      <div style="font-size:15px;margin-bottom:12px">📩 你有 <b id="vCount">4</b> 個未開啟的檔案</div>
+      <div class="vgrid" id="vgrid"></div>
+      <div style="font-size:12px;opacity:.65;margin-top:12px;text-align:center">＊回台灣後出示此頁即可兌換，可截圖保存</div>
+    </div>
+  </section>
+
+  <section class="win tilt2" data-stk="clock">
+    <div class="bar c"><div class="dots"><i></i><i></i><i></i></div><div class="t">world_clock.exe</div><div class="x">×</div></div>
+    <div class="body">
+      <div class="clocks">
+        <div class="clk tw"><div class="city">🇹🇼 台灣・我這邊</div><div class="tm" id="tTW">--:--</div><div class="dt" id="dTW"></div></div>
+        <div class="clk au"><div class="city">🇦🇺 澳洲・你那邊</div><div class="tm" id="tAU">--:--</div><div class="dt" id="dAU"></div></div>
+      </div>
+      <div style="text-align:center;font-size:13px;opacity:.7;margin-top:10px">相差 <span id="diff">3</span> 小時・7000 多公里</div>
+      <div class="cd"><div style="font-size:14px">🎂 距離 2027.11.19 一起吹蠟燭還有</div><div class="n" id="cdN">--</div></div>
+    </div>
+  </section>
+
+  <section class="win tilt2" data-err="2" data-stk="end">
+    <div class="bar p"><div class="dots"><i></i><i></i><i></i></div><div class="t">next_15_years.exe</div><div class="x">×</div></div>
+    <div class="body center">
+      <div class="en" style="font-size:22px">Installing...</div>
+      <div class="prog"><b id="pbar2"></b></div>
+      <div style="margin-top:12px"><button class="btn cyan" id="installBtn">安裝下一個 15 年</button></div>
+      <div class="final" id="final">
+        <img id="endImg" alt="">
+        <p>麻吉續約成功 🤝<br>其實根本不知道到底認識幾年了<br>但繼續朝著老不休阿姨的階段前進ㄅ</p>
+        <p class="en" style="font-size:24px">— from 麥仔 ♡</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">© 2011–2026 best friend forever.exe</div>
+</main>
+
+<!-- folder window -->
+<div class="overlay" id="folderPop">
+  <div class="win">
+    <div class="bar"><div class="dots"><i></i><i></i><i></i></div><div class="t" id="folderTitle">2011/</div><button class="x" data-close>×</button></div>
+    <div class="body">
+      <div class="pgrid" id="pgrid"></div>
+      <div class="binacts" id="binActs" hidden>
+        <button class="btn white" id="restoreBtn">↩ 全部還原</button>
+        <button class="btn pink" id="emptyBtn">🗑️ 清空資源回收筒</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- photo viewer -->
+<div class="overlay" id="viewPop">
+  <div class="win">
+    <div class="bar y"><div class="dots"><i></i><i></i><i></i></div><div class="t" id="viewTitle">photo.jpg</div><button class="x" data-close>×</button></div>
+    <div class="body viewer">
+      <img id="viewImg" alt="">
+      <div class="cap" id="viewCap"></div>
+      <div class="nav"><button class="btn" id="prevBtn">◀</button><span class="en" id="viewIdx"></span><button class="btn" id="nextBtn">▶</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- system message -->
+<div class="overlay" id="errPop">
+  <div class="win" style="max-width:300px">
+    <div class="bar y"><div class="dots"><i></i><i></i><i></i></div><div class="t">System message</div></div>
+    <div class="body center">
+      <div style="font-size:40px" id="errIcon">⚠️</div>
+      <div id="errTxt" style="font-size:16px;margin:6px 0 14px;line-height:1.5"></div>
+      <button class="btn" id="errOk">OK</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="letterPop">
+  <div class="win">
+    <div class="bar p"><div class="dots"><i></i><i></i><i></i></div><div class="t">給娟仔.txt</div><button class="x" data-close>×</button></div>
+    <div class="body"><div class="letter" id="letter"></div></div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   ✏️ 照片與文案：cap 是每張照片的一句話，留空就只顯示年份
+   ========================================================= */
+const PHOTOS = [{"f": "2011_masks_twins.jpg", "date": "2011/05", "cap": "我手機裡最古老的紀錄就是這張了 那時候大家都說我們很像 到底哪裡像？"}, {"f": "2011_night_three.jpg", "date": "2011/05", "cap": "李旻以前是我們的偶像"}, {"f": "2011_uniform_backs.jpg", "date": "2011/05", "cap": "小高一的叛逆 書包反背😤"}, {"f": "2011_mcdonalds.jpg", "date": "2011/05", "cap": "手機還是滑蓋的"}, {"f": "2011_finger_rings.jpg", "date": "2011/08", "cap": "不知道在幹嘛跑去寶雅買首飾？"}, {"f": "2011_dj_selfie.jpg", "date": "2011/08", "cap": "因為要翹課去錄影？feat 孔ㄎㄧㄤ老師"}, {"f": "2011_bathroom_mirror.jpg", "date": "2011/08", "cap": "還變裝 衣服是A2買的吧？"}, {"f": "2011_floor_group.jpg", "date": "2011/08", "cap": "熱舞社國館練舞#熱舞社#國館"}, {"f": "2011_purple_two.jpg", "date": "2011/08", "cap": "退社女去救火比賽"}, {"f": "2011_purple_check.jpg", "date": "2011/08", "cap": "居然還贏了哈哈 #八仙#基女熱舞九字"}, {"f": "2011_group_pose_night.jpg", "date": "2011/09", "cap": "以前的文化中心真好玩"}, {"f": "2011_scarves.jpg", "date": "2011/09", "cap": "以前流行毛衣當口水巾？"}, {"f": "2011_red_uniform_sit.jpg", "date": "2011/09", "cap": "蹲律動人生"}, {"f": "2011_red_uniform_group.jpg", "date": "2011/09", "cap": "以前的一天好長喔！上課下課還可以跳舞玩到超晚"}, {"f": "2012_fb_dinner.jpg", "date": "2012/01", "cap": "未成年的咖啡廳聚會"}, {"f": "2014_ig_0125_snack.jpg", "date": "2014/01", "cap": "畫風一轉直接跳到夜店時期，（2012-2013的我忙著戀愛去了）"}, {"f": "2014_mirror_bw.jpg", "date": "2014/01", "cap": "去夜店還硬要帶EX1😂"}, {"f": "2014_ig_0204_hotpot.jpg", "date": "2014/02", "cap": "吃築間菜要換貢丸啊！"}, {"f": "2014_ig_0204_raincoat.jpg", "date": "2014/02", "cap": "一起奇奇怪怪（真的很怪）"}, {"f": "2014_pout_peace.jpg", "date": "2014/03", "cap": "到處趴趴走好快樂"}, {"f": "2014_plush_toys.jpg", "date": "2014/03", "cap": "你以前還會來我家卡"}, {"f": "2014_ig_0321_paint.jpg", "date": "2014/03", "cap": "#翹課#網咖#畫畫"}, {"f": "2014_ig_0323_cartoon.jpg", "date": "2014/03", "cap": "以前的繪畫天份挺好的"}, {"f": "2014_ig_0323_poop.jpg", "date": "2014/03", "cap": "但我已經想不起來是誰畫的了"}, {"f": "2014_green_sofa.jpg", "date": "2014/03", "cap": "#EX1"}, {"f": "2014_ig_0330_ubike.jpg", "date": "2014/03", "cap": "#萬華小丼丼"}, {"f": "2014_ig_0406_letter.jpg", "date": "2014/04", "cap": "#寶貝情書"}, {"f": "2014_ig_0408_contract.jpg", "date": "2014/04", "cap": "不曉得我們有做到嗎？#耍乖合約"}, {"f": "2014_fisheye_pose.jpg", "date": "2014/06", "cap": "被砸兩次店的 #PXX"}, {"f": "2014_ig_0716_spy.jpg", "date": "2014/07", "cap": "女扮男裝跟蹤Candy 最後還跟丟"}, {"f": "2014_cap_white_tee.jpg", "date": "2014/07", "cap": "膠原蛋白の臉"}, {"f": "2014_less_hat.jpg", "date": "2014/08", "cap": "相機換TR了😂"}, {"f": "2014_red_light.jpg", "date": "2014/08", "cap": "禮服夜店時期"}, {"f": "2014_club_blue.jpg", "date": "2014/10", "cap": "以前真的很愛拍"}, {"f": "2014_street_night.jpg", "date": "2014/10", "cap": "我穿這三小"}, {"f": "2015_white_shirt.jpg", "date": "2015/01", "cap": "20歲真的很愛裝大人ㄟ"}, {"f": "2015_pool.jpg", "date": "2015/02", "cap": "你幫我辦的生日 現在想想這樣對待壽星合理嗎？沒一張照片我是乾的：）"}, {"f": "2015_skate_shop.jpg", "date": "2015/10", "cap": "滑板店時期 #1709"}, {"f": "2015_hippo_balloons.jpg", "date": "2015/11", "cap": "你21歲啦！"}, {"f": "2015_xmas_tree.jpg", "date": "2015/12", "cap": "我們居然有一起去過耶誕城"}, {"f": "2016_dog_filter.jpg", "date": "2016/06", "cap": "Snapchat 狗狗時期"}, {"f": "2016_beach.jpg", "date": "2016/06", "cap": "我始終不明白我以前的品味？"}, {"f": "2017_ig_mai22bd.jpg", "date": "2017/02", "cap": "我22歲啦！"}, {"f": "2017_hair_pull.jpg", "date": "2017/02", "cap": "我們跟家家一起說走就走去宜蘭玩"}, {"f": "2021_scooter.jpg", "date": "2017/02", "cap": "以前真的很愛ㄆ車欸"}, {"f": "2017_raincoat_night.jpg", "date": "2017/04", "cap": "以前好愛欺負黃冠文 #有點甜"}, {"f": "2017_graduation.jpg", "date": "2017/06", "cap": "畢業生與延畢生"}, {"f": "2017_peach_bun.jpg", "date": "2017/11", "cap": "又生日了這一年是壽桃趴"}, {"f": "2018_cat_hug.jpg", "date": "2018/01", "cap": "我居然抱過咪咕 他好委屈😂"}, {"f": "2018_cat_video.jpg", "date": "2018/01", "cap": "這好像是我第一次跟貓相處！"}, {"f": "2018_mirror_stairs.jpg", "date": "2018/03", "cap": "凱系列 有段時期迷上夾娃娃？？"}, {"f": "2019_birthday.jpg", "date": "2019/11", "cap": "又生日啦🙌🏻"}, {"f": "2020_a_night_market.jpg", "date": "2020/09", "cap": "大立百貨之旅"}, {"f": "2020_b_hotel.jpg", "date": "2020/09", "cap": "記得褲子一直被YouBike尬到！超氣"}, {"f": "2020_d_sunglasses.jpg", "date": "2020/09", "cap": "那時候還會早起化妝 好勤奮"}, {"f": "2020_c_train.jpg", "date": "2020/09", "cap": "玩完回程累到都不想講話"}, {"f": "2021_a_blue_cap.jpg", "date": "2021/10", "cap": "台中掏心掏肺之旅"}, {"f": "2022_a_mirror.jpg", "date": "2022/10", "cap": "忘記這是哪ㄌ"}, {"f": "2022_b_purple.jpg", "date": "2022/10", "cap": "丈母娘的一天"}, {"f": "2022_c_tongue.jpg", "date": "2022/11", "cap": "你又長大一歲啦"}, {"f": "2022_d_tent.jpg", "date": "2022/12", "cap": "一群人一起去露營好好玩"}, {"f": "2023_a_cat_collage.jpg", "date": "2023/04", "cap": "這時候在準備要送你的衣服 以前沒AI 拼得很辛苦😂"}, {"f": "2023_b_polaroid.jpg", "date": "2023/05", "cap": "應該是你要去澳洲前的最後一聚"}, {"f": "2023_c_airport.jpg", "date": "2023/05", "cap": "把你送出國 一晃眼居然已經是三年半前的事了！"}, {"f": "2024_a_car.jpg", "date": "2024/06", "cap": "睽違一年回來直接變辣妹"}, {"f": "2024_b_hug_mountain.jpg", "date": "2024/06", "cap": "好開心有一起去露營 還遇到巨ㄓㄤ"}, {"f": "2024_d_painting.jpg", "date": "2024/11", "cap": "我覺得⋯我畫的挺像的"}, {"f": "2025_missing.jpg", "date": "2025/11", "cap": "去年的截圖ㄉ照片遺失啦！"}];
+const BIN = [{"f": "2017_snow_face.jpg", "date": "2017/05", "cap": "把朋友變醜好像是我的樂趣⋯"}, {"f": "2017_snow_old.jpg", "date": "2017/05", "cap": "十年前的快樂好簡單😂"}, {"f": "2014_glare_bar.jpg", "date": "2014/08", "cap": "但為什麼我們要一直扮醜咧"}, {"f": "2015_face_warp.jpg", "date": "2015/08", "cap": ""}, {"f": "2014_eyes_closeup.jpg", "date": "2014/10", "cap": ""}, {"f": "2014_messy_hair.jpg", "date": "2014/08", "cap": "蛤？"}, {"f": "2014_bandana_glasses.jpg", "date": "2014/08", "cap": "？？"}, {"f": "2014_teeth_closeup.jpg", "date": "2014/08", "cap": ""}, {"f": "2014_upside_face.jpg", "date": "2014/06", "cap": ""}];
+const ENDING = "2024_c_point_sky.jpg";
+const LETTER = "安安娟仔：\n我先自首，我最近真的活在自己的世界裡當工程師太忘我了，回神時才發現你生日已經快到了😱來不及好好計畫，感覺找高救火也太晚了，所以我就決定乾脆趁著自己還在走火入魔的狀態，直接做一個回憶殺網站給你！\n\n但我真覺得這是個很讚的想法（自己講），因為在整理從小到大的照片時，我才意識到我們已經參與彼此一半的人生了，可惜更久以前無名時期的照片都不見了，吳平那一段跟緊咩也好好玩啊～\n\n以前真的做過太多瘋癲又匪夷所思的事了😂但那些幼稚不正經，卻可以因為一件白癡小事笑很久的日子，還好一直有你在，如果人生沒有這樣脫序地活過，我一定會很遺憾，畢竟很多事真的只有小時候才會想做，長大再做就真的尷尬了😅\n\n所以謝謝小時候的你，陪我無憂無慮、自由自在、沒有明天地玩過，也在我無數個自我懷疑的時刻，用一點也不肉麻的方式接住我（雖然我們小時候都是彼此媽媽眼中的壞朋友）。\n\n回到最開始，信中麥麥跟中正超人（？）的國三，補習班的緣分，再一起讀基女，一起翹課看重播再偷快轉、吃著頭皮炸汗的大辣鹹水雞、把課本畫滿、一個人喝一排養樂多、太皮下課還會被留下來課後輔導，真的都在混🙂高一熱舞社時期，每天放學都一起走路，經過藝術街，怕被藝術人打，音箱佔位，蹲律動蹲到火大、在文化中心打滾玩滑板。以前我們都會一起搭104回家，但你家真的有夠近，每次聊到一半中船路就到站了！\n高中中間好長一段時間我都在戀愛腦，變得很封閉，心思都不在學校，畢業那年，我記得是因為你回了我臉書貼文，我們才又開始玩在一起，那件事你可能忘了但卻影響我很多！\n記得有好長一段時間我們都黏在一起，日夜顛倒起床就想著今天要幹嘛，大半夜發瘋走路去地標，還遇到豬，後來上了大學，開始認識彼此生活圈的新朋友，半夜一樣不睡覺騎車鬼混，去探險夜遊，甚至還曾一起去中正公園埋被路殺的貓咪⋯還有一次我載你從我家出發，後面公車叭個不停，我還路怒症想說是在叭什麼，後來才發現靠杯我們一路都在聊天忘記戴安全帽⋯^_^？還有騎蝌蚪的車在海洋廣場緩慢倒車也很鬧，還有無數個夏朵跟鮪魚蛋餅⋯\n還有PXX時期，那時候太愛喝酒，但因為實在太窮，就一起去酒吧上班了（只為了可以喝免費的酒還有錢賺），每次想起這個動機都覺得很好笑，這些時光也認識好多客人（跟怪人），下班還為了省計程車錢，在海洋廣場吃冰、玩仙女棒流浪到天亮。\n自從染上酒精後鬧事的故事真的可以講三天，一起狂跑趴，基隆酒吧都被我們喝遍，那時期的我們可欻的（後來就被砸店了，直接殞落），無酒不歡的年紀，一個晚上去好幾家夜店，結束再去吃京星，有一年生日我還許願去酒店玩，然後我們一晚直接去三家，每次喝完酒隔天都在數身上的傷、找前一晚的記憶、你的手機相簿永遠很精彩、永遠會破掉的黑絲襪還有各種嘔吐、我撞牆以為鼻子掉了坐在路邊大哭、你醉到直接把頭塞進垃圾桶、我喝醉拿菸蒂燙你、你戒指掉進馬桶我徒手幫你撿起來⋯完全已經忘了這些荒唐故事的時間序了，但真的講也講不完😀\n\n再到後來在台北生活的時期又是另一回事了，也是瘋了好多年、認識了好多人（但我酒醒也差不多忘光了）、闖了好多禍、也發生好多事，以前都覺得你很猛，看一次的路人也能記得，我一起玩三次以上的人，下次見面還是可能臉盲（真的有夠沒水準）。\n不知不覺我們就悄悄地變成大人了，不再被叫妹妹，還會開始被叫姐（現在甚至已經是姨了），我才猛然發現，好多事情跟小時候都變得不一樣了，然後，你就很突然的決定去澳洲了。\n\n那時候我常覺得好像只剩下我還長不大，因為大家都好努力在為未來奮鬥，我卻一點企圖心都沒有，你去澳洲後更有感，我記得有一次我還打給你講到哭，因為覺得你不在以後整個感覺都不一樣了，忘記你當時怎麼安慰我的，但我記得跟你聊完後我就好多了！\n在你面前我從來不需要壓抑自己，也不必害怕展現自己的脆弱，因為你總是欣賞跟包容我的奇怪、不批判任何狀態的我、大方介紹你所有朋友給我認識、在我失智的時候給我自信，然後該好好玩的時候還是會跟我一起幼稚（不知為何此刻突然就想起了大立百貨⋯）。\n\n如果我們現在人在一起，我大概也就不會這麼感性了吧！如果你在台灣，這一兩年的很多事肯定也不會發生，而我現在應該也不會有這個機緣，特別空下一個夜晚，這麼認真回憶這十幾年了。\n有時都覺得，老天的安排真的很奇妙，好像就得在某個時間點發生一些事來鍛鍊我們的心智，而且是逼得人不得不直面的那種，而我們也都能見招拆招的渡過。\n人生的過客來來去去，這一年我們各自心境上的轉折也剛好都特別深刻🚬\n但也因此，我們才有機會好好靜下來整理自己，也精神陪伴著彼此，所以嚴格算起來，我們又一起經歷了一次友情昇華了ㄟ！\n\n能夠被理解並被保護著，是件可遇不可求也很幸福的事，這一切都不是理所當然，我相信也是因為我們都很珍惜、很真誠地對待彼此。\n但我還是希望，這是最後一次你的生日跟我隔著七千多公里的距離了，下次生日我想直接跟你一起吹蠟燭啦～\n\n最後依然想對你說\n有你真好\n願我們都能堅信自己永遠有選擇\n然後自由、快樂、自信地做自己🙌🏻\n愛你何娟，生日快樂🎂\n\nby 最愛你的小麥";
+const VOUCHERS = [
+  { icon:"🍽️", txt:"指定一家餐廳<br>麥請客" },
+  { icon:"📸", txt:"妝髮沙龍<br>形象照一組" },
+  { icon:"🧹", txt:"瑪麗亞幫你<br>打掃家裡一天" },
+  { icon:"⛴️", txt:"外島來回船票<br>＋當司機" },
+];
+const POPUP_ERRORS = [
+  "警告：偵測到過量的友情<br>系統快要無法負荷 💥",
+  "錯誤 404<br>找不到比我們更好的姐妹 🔍",
+  "記憶體不足<br>15 年的回憶太多了，請升級硬碟 💾",
+];
+/* ========================================================= */
+
+const $ = s => document.querySelector(s);
+const thumb = f => "thumbs/" + f, full = f => "photos/" + f;
+
+/* ---------- boot ---------- */
+const bootMsgs = ["正在載入 15 年的回憶...","正在找出你的黑歷史...","正在準備蛋糕...","完成！"];
+let pct = 0;
+const bootTimer = setInterval(()=>{
+  pct += 4 + Math.random()*9;
+  if(pct >= 100){ pct = 100; clearInterval(bootTimer); $("#openBtn").disabled = false; }
+  $("#pbar").style.width = pct + "%";
+  $("#ptxt").textContent = bootMsgs[Math.min(3, Math.floor(pct/34))];
+},120);
+$("#openBtn").onclick = ()=>{
+  $("#boot").style.display = "none";
+  $("#main").classList.add("on");
+  window.scrollTo(0,0);
+  startMusic(); confetti(40);
+};
+
+/* ---------- music: 4 original chiptune tracks (WebAudio) ---------- */
+const mf=m=>440*Math.pow(2,(m-69)/12);
+function buildTrack(def){
+  // returns {len, ev:[[t,dur,kind,midi,vol]]}
+  const b8=60/def.bpm/2, bar=b8*8, ev=[];
+  const L=def.lead, nb=L.length/8;
+  for(let i=0;i<L.length;i++){
+    if(L[i]==null) continue;
+    let d=1; while(i+d<L.length && L[i+d]===undefined && d<4) d++;
+    ev.push([i*b8, d*b8*0.95, def.leadWave, L[i], def.leadVol||0.08]);
+  }
+  for(let k=0;k<nb;k++){
+    const ch=def.chords[k%def.chords.length], t0=k*bar;
+    if(def.bass==="pump") for(let j=0;j<8;j++) ev.push([t0+j*b8, b8*0.8,"triangle", ch[0]-12+(j%2?12:0), 0.07]);
+    else if(def.bass==="walk") for(let j=0;j<4;j++) ev.push([t0+j*2*b8, b8*1.7,"triangle", ch[0]-12+(j%2?7:0), 0.075]);
+    else ev.push([t0, bar*0.95,"triangle", ch[0]-12, 0.07]);
+    if(def.arp) for(let j=0;j<8;j++) ev.push([t0+j*b8, b8*0.9,"sine", ch[j%3]+12, 0.025]);
+    const dr=def.drums||{};
+    for(let j=0;j<8;j++){
+      if(dr.k&&dr.k.includes(j)) ev.push([t0+j*b8,0.18,"kick",0,0.5]);
+      if(dr.s&&dr.s.includes(j)) ev.push([t0+j*b8,0.12,"snare",0,0.16]);
+      if(dr.h&&dr.h.includes(j)) ev.push([t0+j*b8,0.04,"hat",0,0.06]);
+    }
+  }
+  return {len:nb*bar+(def.tail||0), ev};
+}
+const _=undefined, N_=null;
+/* 想放自己的 mp3：把檔案放進 music 資料夾，然後在下面填檔名 */
+const AUDIO_FILES = [
+  { name:"Dilemma.mp3",   src:"music/Dilemma.mp3" },
+  { name:"Timber.mp3",    src:"music/Timber.mp3" },
+  { name:"TakeABow.mp3",  src:"music/TakeABow.mp3" },
+];
+const TRACKS=[
+ {name:"happy_birthday.wav", bpm:176, leadWave:"square", leadVol:0.13, chords:[[48,52,55],[48,52,55],[43,47,50],[43,47,50],[43,47,50],[48,52,55],[48,52,55],[41,45,48],[41,45,48],[41,45,48],[43,47,50],[48,52,55]], bass:"hold", tail:0.7,
+  lead:[67,_,_,67,69,_,_,_, 67,_,_,_,72,_,_,_, 71,_,_,_,_,_,_,_, 67,_,_,67,69,_,_,_, 67,_,_,_,74,_,_,_, 72,_,_,_,_,_,_,_, 67,_,_,67,79,_,_,_, 76,_,_,_,72,_,71,_, 69,_,_,_,_,_,_,_, 77,_,_,77,76,_,_,_, 72,_,_,_,74,_,_,_, 72,_,_,_,_,_,_,_]},
+ {name:"y2k_night_drive.mp3", bpm:108, leadWave:"square", chords:[[57,60,64],[53,57,60],[48,52,55],[55,59,62]], bass:"walk", arp:true, drums:{k:[0,4],s:[2,6],h:[0,1,2,3,4,5,6,7]},
+  lead:[69,72,76,72,74,72,69,N_, 65,69,72,69,72,74,72,N_, 67,72,76,79,76,74,72,N_, 74,71,67,71,74,76,74,N_,
+        76,N_,74,72,74,N_,72,69, 72,N_,69,65,69,72,74,N_, 76,79,76,72,74,76,72,N_, 71,72,74,71,67,_,_,N_]},
+ {name:"party.exe.mp3", bpm:126, leadWave:"square", chords:[[48,52,55],[43,47,50],[45,48,52],[41,45,48]], bass:"pump", drums:{k:[0,2,4,6],s:[2,6],h:[1,3,5,7]},
+  lead:[72,N_,72,76,79,N_,76,72, 74,N_,74,79,83,N_,79,74, 76,N_,76,72,69,72,76,79, 77,76,74,72,74,_,_,N_,
+        79,79,76,76,72,72,76,N_, 79,79,74,74,71,71,74,N_, 72,74,76,79,81,79,76,72, 77,N_,76,N_,74,N_,72,N_]},
+ {name:"7000km.mp3", bpm:80, leadWave:"triangle", leadVol:0.13, chords:[[53,57,60],[48,52,55],[50,53,57],[46,50,53]], bass:"hold", arp:true, drums:{k:[0],h:[4]},
+  lead:[77,_,76,_,72,_,_,_, 76,_,74,_,72,_,67,_, 74,_,72,_,69,_,72,_, 70,_,72,_,74,_,_,_,
+        72,74,77,_,81,_,79,77, 76,_,72,_,74,76,_,_, 77,_,74,_,72,69,_,_, 70,72,74,77,76,_,72,_]},
+].map(d=>Object.assign(d,buildTrack(d)));
+const AUD=new Audio(); AUD.preload="none";
+TRACKS.splice(1,0,...AUDIO_FILES.map(a=>({name:a.name, src:a.src, ev:[], len:1})));
+
+let ctx=null, playing=false, seqTimer=null, cur_t=0, loopStart=0, evIdx=0, master=null, noiseBuf=null;
+function voice(kind,midi,t,dur,vol){
+  if(kind==="kick"){ const o=ctx.createOscillator(),g=ctx.createGain(); o.frequency.setValueAtTime(140,t); o.frequency.exponentialRampToValueAtTime(40,t+0.15);
+    g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(0.001,t+dur); o.connect(g).connect(master); o.start(t); o.stop(t+dur); return; }
+  if(kind==="snare"||kind==="hat"){ const s=ctx.createBufferSource(); s.buffer=noiseBuf; const f=ctx.createBiquadFilter(), g=ctx.createGain();
+    f.type=kind==="hat"?"highpass":"bandpass"; f.frequency.value=kind==="hat"?7000:1800;
+    g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(0.001,t+dur); s.connect(f).connect(g).connect(master); s.start(t); s.stop(t+dur); return; }
+  const o=ctx.createOscillator(), g=ctx.createGain(); o.type=kind; o.frequency.value=mf(midi);
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+0.015); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g).connect(master); o.start(t); o.stop(t+dur+0.02);
+}
+function scheduler(){
+  const T=TRACKS[cur_t]; if(T.src) return;
+  while(true){
+    if(evIdx>=T.ev.length){ loopStart+=T.len; evIdx=0; }
+    const e=T.ev[evIdx], at=loopStart+e[0];
+    if(at>ctx.currentTime+0.3) break;
+    if(at>=ctx.currentTime-0.05) voice(e[2],e[3],at,e[1],e[4]);
+    evIdx++;
+  }
+}
+function sortEv(){ TRACKS.forEach(T=>T.ev.sort((a,b)=>a[0]-b[0])); }
+sortEv();
+function label(){ $("#songLbl").textContent="♪ "+(cur_t+1)+"/"+TRACKS.length+"  "+TRACKS[cur_t].name;
+  document.querySelectorAll(".mt").forEach((b,i)=>b.classList.toggle("on",i===cur_t)); }
+function startMusic(){
+  try{
+    if(!ctx){ ctx=new (window.AudioContext||window.webkitAudioContext)(); master=ctx.createGain(); master.gain.value=0.9; master.connect(ctx.destination);
+      noiseBuf=ctx.createBuffer(1,ctx.sampleRate*0.3,ctx.sampleRate); const d=noiseBuf.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1; }
+    ctx.resume(); if(playing) return;
+    playing=true; loopStart=ctx.currentTime+0.1; evIdx=0;
+    const T=TRACKS[cur_t]; if(T.src){ if(!AUD.src.endsWith(encodeURI(T.src))) AUD.src=T.src; AUD.play().catch(()=>{}); } clearInterval(seqTimer); seqTimer=setInterval(scheduler,50);
+    $("#disc").classList.add("spin"); $("#playBtn").textContent="❚❚"; label();
+  }catch(e){}
+}
+function pauseMusic(){ try{AUD.pause();}catch(e){} playing=false; clearInterval(seqTimer); $("#disc").classList.remove("spin"); $("#playBtn").textContent="▶";
+  if(master&&ctx){ const old=master; old.gain.setValueAtTime(old.gain.value,ctx.currentTime); old.gain.linearRampToValueAtTime(0,ctx.currentTime+0.05);
+    setTimeout(()=>old.disconnect(),120); master=ctx.createGain(); master.gain.value=0.9; master.connect(ctx.destination); } }
+function playTrack(i){ cur_t=(i+TRACKS.length)%TRACKS.length; pauseMusic(); try{AUD.currentTime=0;}catch(e){} label(); startMusic(); }
+AUD.addEventListener("ended",()=>playTrack(cur_t+1));
+AUD.addEventListener("error",()=>{ if(playing&&TRACKS[cur_t].src) playTrack(cur_t+1); });
+$("#playBtn").onclick=()=> playing?pauseMusic():startMusic();
+$("#prevBtn2").onclick=()=>playTrack(cur_t-1);
+$("#nextBtn2").onclick=()=>playTrack(cur_t+1);
+const ml=$("#mlist"); TRACKS.forEach((T,i)=>{ const b=document.createElement("button"); b.className="mt"; b.textContent=String(i+1).padStart(2,"0")+"  "+T.name; b.onclick=()=>playTrack(i); ml.appendChild(b); });
+label();
+const eq=$("#eq"); for(let i=0;i<14;i++) eq.appendChild(document.createElement("i"));
+setInterval(()=>{ eq.querySelectorAll("i").forEach(b=> b.style.height = playing ? (15+Math.random()*85)+"%" : "12%"); },150);
+/* ---------- timeline ---------- */
+$("#pcount").textContent=PHOTOS.length;
+PHOTOS.forEach((p,i)=>{
+  const b=document.createElement("button"); b.className="tile";
+  b.innerHTML=`<img src="${thumb(p.f)}" alt="" loading="lazy"><span>${p.date}</span>`;
+  b.onclick=()=>{ curList=PHOTOS; openPhoto(i); };
+  $("#tgrid").appendChild(b);
+});
+const YEARS=[]; PHOTOS.forEach(p=>{ const y=p.date.slice(0,4); let g=YEARS.find(x=>x.year===y); if(!g){g={year:y,photos:[]};YEARS.push(g);} g.photos.push(p); });
+let curList=[], cur=0;
+function openList(title, list, isBin){
+  curList=list;
+  $("#folderTitle").textContent = title + "（" + list.length + " 個項目）";
+  const g=$("#pgrid"); g.innerHTML=""; g.scrollTop=0;
+  list.forEach((p,i)=>{
+    const b=document.createElement("button");
+    b.innerHTML=`<img src="${thumb(p.f)}" alt="" loading="lazy">`;
+    b.onclick=()=>openPhoto(i);
+    g.appendChild(b);
+  });
+  $("#binActs").hidden=!isBin;
+  $("#folderPop").classList.add("on");
+}
+function openPhoto(i){
+  cur=(i+curList.length)%curList.length;
+  const p=curList[cur];
+  $("#viewImg").src=full(p.f);
+  $("#viewTitle").textContent=p.date;
+  $("#viewCap").textContent=p.cap||"";
+  $("#viewIdx").textContent=(cur+1)+" / "+curList.length;
+  $("#viewPop").classList.add("on");
+}
+$("#prevBtn").onclick=()=>openPhoto(cur-1);
+$("#nextBtn").onclick=()=>openPhoto(cur+1);
+let tx=null;
+$("#viewImg").addEventListener("touchstart",e=>{tx=e.touches[0].clientX},{passive:true});
+$("#viewImg").addEventListener("touchend",e=>{ if(tx===null) return; const dx=e.changedTouches[0].clientX-tx; if(Math.abs(dx)>40) openPhoto(cur+(dx<0?1:-1)); tx=null; });
+document.querySelectorAll("[data-close]").forEach(b=> b.onclick=()=> b.closest(".overlay").classList.remove("on"));
+["folderPop","viewPop"].forEach(id=> $("#"+id).addEventListener("click",e=>{ if(e.target.id===id) e.currentTarget.classList.remove("on"); }));
+
+/* ---------- recycle bin ---------- */
+$("#binCount").textContent = BIN.length + " 個項目";
+$("#binBtn").onclick=()=>openList("資源回收筒", BIN, true);
+$("#emptyBtn").onclick=()=>showErr("錯誤：無法刪除<br>這些回憶受到永久保護 🔒",null,"🚫");
+$("#restoreBtn").onclick=()=>showErr("還原失敗<br>醜照永遠都在，請接受現實 😌",null,"🙃");
+
+/* ---------- system message ---------- */
+let errCb=null;
+function showErr(html,cb,icon){
+  $("#errIcon").textContent=icon||"⚠️"; $("#errTxt").innerHTML=html; errCb=cb||null;
+  $("#errPop").classList.add("on");
+}
+$("#errOk").onclick=()=>{ $("#errPop").classList.remove("on"); const cb=errCb; errCb=null; if(cb) cb(); };
+
+/* random popups when sections first come into view */
+const shown=new Set();
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    const k=e.target.dataset.err;
+    if(!e.isIntersecting||shown.has(k)) return;
+    shown.add(k);
+    setTimeout(()=>{
+      if(document.querySelector(".overlay.on")){ shown.delete(k); return; }
+      showErr(POPUP_ERRORS[+k]);
+    }, 900);
+  });
+},{threshold:.6});
+document.querySelectorAll("[data-err]").forEach(s=>io.observe(s));
+
+/* ---------- cake → letter ---------- */
+$("#letter").innerHTML = LETTER.split(/\n+/).filter(t=>t.trim()).map((t,i,arr)=>`<p${i===arr.length-1?' class="sign"':''}>${t.replace(/&/g,"&amp;").replace(/</g,"&lt;")}</p>`).join("");
+$("#cakeBtn").onclick=()=>{
+  confetti(80);
+  setTimeout(()=>{ $("#letter").scrollTop=0; $("#letterPop").classList.add("on"); $("#cakeHint").textContent="💌 再點一次可以重看"; },500);
+};
+$("#letterPop").addEventListener("click",e=>{ if(e.target.id==="letterPop") e.currentTarget.classList.remove("on"); });
+/* ---------- stickers ---------- */
+const STK=[["hero","kiss","right:-8px;top:-18px;width:100px;transform:rotate(8deg)"],
+ ["hero","plane","left:-10px;top:58px;width:84px;transform:rotate(-10deg)"],
+ ["music","computer","right:-14px;top:-40px;width:78px;transform:rotate(10deg)"],
+ ["mem","camera","right:-16px;top:-44px;width:84px;transform:rotate(12deg)"],
+ ["mem","wink","left:-16px;bottom:-46px;width:120px;transform:rotate(-7deg)"],
+ ["cake","bluecap","right:-14px;top:-50px;width:100px;transform:rotate(8deg)"],
+ ["gift","passport","right:-14px;top:-42px;width:96px;transform:rotate(-8deg)"],
+ ["end","hug","left:-14px;top:-56px;width:112px;transform:rotate(-6deg)"],
+ ["end","window","right:-12px;bottom:-44px;width:104px;transform:rotate(6deg)"],
+ ["clock","plane","right:-12px;top:-40px;width:80px;transform:rotate(-8deg)"]];
+STK.forEach(([sec,n,css])=>{ const el=document.querySelector(`[data-stk="${sec}"]`); if(!el) return;
+  const i=document.createElement("img"); i.className="stk"; i.src=`assets/st/${n}.png`; i.alt=""; i.style.cssText=css; el.appendChild(i); });
+/* ---------- clocks + countdown ---------- */
+const fmt=(tz,o)=>new Intl.DateTimeFormat("zh-TW",Object.assign({timeZone:tz},o)).format(new Date());
+const hourIn=tz=>{const p=new Intl.DateTimeFormat("en-GB",{timeZone:tz,hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(new Date());return +p.find(x=>x.type==="hour").value+ +p.find(x=>x.type==="minute").value/60;};
+const icon=h=>h>=6&&h<18?"☀️":"🌙";
+const TARGET=new Date("2027-11-19T00:00:00+08:00");
+function tick(){
+  [["TW","Asia/Taipei"],["AU","Australia/Sydney"]].forEach(([k,tz])=>{
+    $("#t"+k).textContent=fmt(tz,{hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23"});
+    $("#d"+k).textContent=icon(hourIn(tz))+" "+fmt(tz,{month:"numeric",day:"numeric",weekday:"short"});
+  });
+  let d=(hourIn("Australia/Sydney")-hourIn("Asia/Taipei")+24)%24; $("#diff").textContent=Math.round(d);
+  let ms=Math.max(0,TARGET-new Date()); const D=Math.floor(ms/864e5); ms%=864e5;
+  const h=Math.floor(ms/36e5), m=Math.floor(ms%36e5/6e4), sec=Math.floor(ms%6e4/1e3);
+  $("#cdN").textContent=`${D} 天 ${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`;
+}
+tick(); setInterval(tick,1000);
+/* ---------- vouchers ---------- */
+let unopened=VOUCHERS.length; $("#vCount").textContent=unopened;
+VOUCHERS.forEach((v,i)=>{
+  const c=document.createElement("button"); c.className="card";
+  c.innerHTML=`<div class="in"><div class="face front"><div class="ic">🎁</div><div class="en">gift_0${i+1}.exe</div></div>
+    <div class="face back"><span class="no">NO.0${i+1}</span><div class="txt">${v.icon} ${v.txt}</div><div class="fine">有效期限：永久</div></div></div>`;
+  c.onclick=()=>{
+    if(c.classList.contains("flip")) return;
+    showErr("偵測到一份禮物！<br>確定要開啟嗎？",()=>{ c.classList.add("flip"); unopened--; $("#vCount").textContent=unopened; confetti(25); },"🎁");
+  };
+  $("#vgrid").appendChild(c);
+});
+
+/* ---------- ending ---------- */
+$("#endImg").src=full(ENDING);
+$("#installBtn").onclick=function(){
+  this.disabled=true; let p=0;
+  const t=setInterval(()=>{
+    p+=3+Math.random()*6;
+    if(p>=100){ p=100; clearInterval(t); this.style.display="none"; $("#final").classList.add("on"); confetti(120); }
+    $("#pbar2").style.width=p+"%";
+  },90);
+};
+
+/* ---------- confetti ---------- */
+function confetti(n){
+  const cs=["#ff8fc8","#43dde6","#ffc533","#c9a8ff","#fff"];
+  for(let i=0;i<n;i++){
+    const d=document.createElement("div"); d.className="cf";
+    d.style.left=Math.random()*100+"vw"; d.style.background=cs[i%cs.length];
+    d.style.animationDuration=(1.8+Math.random()*1.8)+"s"; d.style.animationDelay=(Math.random()*.5)+"s";
+    if(Math.random()<.4) d.style.borderRadius="50%";
+    document.body.appendChild(d); setTimeout(()=>d.remove(),4500);
+  }
+}
+</script>
+</body>
+</html>
