@@ -423,6 +423,7 @@ const TRACKS=[
 ].map(d=>Object.assign(d,buildTrack(d)));
 const AUD=new Audio(); AUD.preload="none";
 TRACKS.splice(1,0,...AUDIO_FILES.map(a=>({name:a.name, src:a.src, ev:[], len:1})));
+TRACKS.length=1+AUDIO_FILES.length; // 只保留生日快樂歌＋自己的歌
 
 let ctx=null, playing=false, seqTimer=null, cur_t=0, loopStart=0, evIdx=0, master=null, noiseBuf=null;
 function voice(kind,midi,t,dur,vol){
